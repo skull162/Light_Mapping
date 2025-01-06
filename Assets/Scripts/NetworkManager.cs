@@ -12,7 +12,7 @@ public class NetworkManager : MonoBehaviour
     [SerializeField] private string _webSocketURL = "ws://localhost:3000/";
 
     [Header("Game Settings")]
-    [SerializeField] private NetworkController _playerPrefab;
+    [SerializeField] private List<NetworkController> _playerPrefab = new List<NetworkController>();
     [SerializeField] private Transform _spawnPosition;
 
     // PRIVATE MEMBERS
@@ -145,7 +145,7 @@ public class NetworkManager : MonoBehaviour
 
         Debug.Log($"NetworkManager.SpawnPlayer: Spawning Player {id}");
 
-        var instance = Instantiate(_playerPrefab, _spawnPosition.position, Quaternion.identity);
+        var instance = Instantiate(_playerPrefab[Random.Range(0, _playerPrefab.Count)], _spawnPosition.position, Quaternion.identity);
         instance.Initialize(id);
 
         _playerInstances.Add(id, instance);
