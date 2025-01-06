@@ -16,6 +16,8 @@ public class ObjectInteraction : MonoBehaviour
     public List<string> lampId = new List<string>();
     public string currentId;
 
+    [SerializeField]private List<string> tempId = new List<string>();
+
 
     void Start()
     {
@@ -54,9 +56,10 @@ public class ObjectInteraction : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             controlPlayer = other.gameObject.GetComponent<MovementController>();
-            controlNetwork = other.gameObject.GetComponent<NetworkController>();
+            //controlNetwork = other.gameObject.GetComponent<NetworkController>();
             controlPlayer.insideLamp = true;
-            currentId = controlNetwork.Id;
+            //currentId = controlNetwork.Id;
+            tempId.Add(other.gameObject.GetComponent<NetworkController>().Id);
             isPlayerNearby = true;
             if (fKeyImage != null)
             {
@@ -83,6 +86,7 @@ public class ObjectInteraction : MonoBehaviour
                 fKeyImage.SetActive(false); // Sembunyikan sprite tombol F
             }
             currentId = null;
+            tempId.Remove(other.gameObject.GetComponent<NetworkController>().Id);
         }
         Debug.Log(idPlayer[idPlayer.Count - 1]);
     }
