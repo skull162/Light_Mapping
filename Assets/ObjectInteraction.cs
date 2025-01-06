@@ -56,10 +56,10 @@ public class ObjectInteraction : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             controlPlayer = other.gameObject.GetComponent<MovementController>();
-            //controlNetwork = other.gameObject.GetComponent<NetworkController>();
+            controlNetwork = other.gameObject.GetComponent<NetworkController>();
             controlPlayer.insideLamp = true;
             //currentId = controlNetwork.Id;
-            tempId.Add(other.gameObject.GetComponent<NetworkController>().Id);
+            tempId.Add(controlNetwork.Id);
             isPlayerNearby = true;
             if (fKeyImage != null)
             {
@@ -78,6 +78,7 @@ public class ObjectInteraction : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
+        controlNetwork = other.gameObject.GetComponent<NetworkController>();
         if (other.CompareTag("Player"))
         {
             isPlayerNearby = false;
@@ -86,7 +87,7 @@ public class ObjectInteraction : MonoBehaviour
                 fKeyImage.SetActive(false); // Sembunyikan sprite tombol F
             }
             currentId = null;
-            tempId.Remove(other.gameObject.GetComponent<NetworkController>().Id);
+            tempId.Remove(controlNetwork.Id);
         }
         Debug.Log(idPlayer[idPlayer.Count - 1]);
     }
