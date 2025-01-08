@@ -247,7 +247,7 @@ MonoBehaviour:
   - {x: -0.2676592, y: -0.31141073, z: 0}
   m_ShapePathHash: -724168523
   m_Mesh: {fileID: 0}
-  m_InstanceId: -276596
+  m_InstanceId: 33838
   m_LocalBounds:
     m_Center: {x: 0.012273073, y: 0.059883, z: 0}
     m_Extent: {x: 0.28263927, y: 0.53976643, z: 0}
@@ -317,6 +317,7 @@ MonoBehaviour:
   _networkInput: {fileID: 6807611788865903298}
   insideLamp: 0
   objectInteract: {fileID: 0}
+  textNama: {fileID: 6404122916846028938}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8

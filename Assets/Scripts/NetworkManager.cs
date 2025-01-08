@@ -110,19 +110,34 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
+
+
     private void HandleTextMessage(string textMessage)
+{
+    var parsedMessage = JsonUtility.FromJson<RelayMessage>(textMessage);
+
+    var id = parsedMessage.id;
+    var message = parsedMessage.message;
+
+    Debug.Log($"Received Message: {message}");
+
+    if (message.StartsWith("name:"))
     {
-        var parsedMessage = JsonUtility.FromJson<RelayMessage>(textMessage);
+        string[] parts = message.Split(',');
+        string playerName = parts[0].Split(':')[1];
+        int characterId = int.Parse(parts[1].Split(':')[1]); // Ubah ke int
 
-        var id = parsedMessage.id;
-        var message = parsedMessage.message;
+        Debug.Log($"Player Name: {playerName}, Character ID: {characterId}");
 
-        // Debug.Log($"NetworkManager: Parsed text message: id: {id}, message: {message}");
-
+        // Spawn the player only after receiving name and ID
+        SpawnPlayer(id, characterId, playerName);
+    }
+    else
+    {
         switch (message)
         {
             case "connected":
-                SpawnPlayer(id);
+                // Do not spawn player here, wait for name and ID
                 break;
 
             case "disconnected":
@@ -134,22 +149,29 @@ public class NetworkManager : MonoBehaviour
                 break;
         }
     }
+}
 
-    private void SpawnPlayer(string id)
+
+
+
+    private void SpawnPlayer(string id, int characterId, string player)
+{
+    if (_playerInstances.ContainsKey(id))
     {
-        if (_playerInstances.ContainsKey(id))
-        {
-            Debug.LogError($"NetworkManager.SpawnPlayer: Player with id {id} already spawned!");
-            return;
-        }
-
-        Debug.Log($"NetworkManager.SpawnPlayer: Spawning Player {id}");
-
-        var instance = Instantiate(_playerPrefab[Random.Range(0, _playerPrefab.Count)], _spawnPosition.position, Quaternion.identity);
-        instance.Initialize(id);
-
-        _playerInstances.Add(id, instance);
+        Debug.LogError($"NetworkManager.SpawnPlayer: Player with id {id} already spawned!");
+        return;
     }
+
+    Debug.Log($"NetworkManager.SpawnPlayer: Spawning Player {id} with Character ID {characterId}");
+
+    var instance = Instantiate(_playerPrefab[characterId - 1], _spawnPosition.position, Quaternion.identity);
+    MovementController playerControll = instance.GetComponent<MovementController>();
+    playerControll.textNama.text = player;
+    instance.Initialize(id);
+
+    _playerInstances.Add(id, instance);
+}
+
 
     private void DespawnPlayer(string id)
     {
@@ -196,4 +218,5 @@ public class RelayMessage
 {
     public string id;
     public string message;
+    public int characterId; // Mengubah dari string menjadi int
 }
