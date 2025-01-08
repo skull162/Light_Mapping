@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using TMPro;
 
 public class MovementController : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class MovementController : MonoBehaviour
     private Animator animator;
     public bool insideLamp;
     [SerializeField]private ObjectInteraction objectInteract;
+
+    public TMP_Text textNama;
 
     // Mengecek apakah karakter berada di tanah
     private bool isGrounded;
